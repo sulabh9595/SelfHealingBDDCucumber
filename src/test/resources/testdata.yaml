@@ -1,0 +1,9 @@
+amazon:
+  searchLaptop: "laptop"
+  searchMouse: "wireless mouse"
+  searchHeadphones: "noise cancelling headphones"
+  searchBook: "selenium testing books"
+  searchGift: "gift card"
+  credentials:
+    username: "user@example.com"
+    password: "ExamplePassword123"
