@@ -39,7 +39,7 @@ public class DriverManager {
      * @throws ConfigurationException if browser type is not supported
      */
     public static void initDriver() {
-        String browser = ConfigReader.getProperty("browser", "chrome").toLowerCase();
+        String browser = ConfigReader.get("browser", "chrome").toLowerCase();
         LOGGER.info("Initializing WebDriver for browser: {}", browser);
 
         try {
@@ -70,7 +70,7 @@ public class DriverManager {
         applyCommonOptions(options);
         
         // Chrome-specific options
-        boolean headless = Boolean.parseBoolean(ConfigReader.getProperty("headless", "false"));
+        boolean headless = Boolean.parseBoolean(ConfigReader.get("headless", "false"));
         if (headless) {
             options.addArguments("--headless");
         }
@@ -89,7 +89,7 @@ public class DriverManager {
         FirefoxOptions options = new FirefoxOptions();
         
         // Apply standard options
-        boolean headless = Boolean.parseBoolean(ConfigReader.getProperty("headless", "false"));
+        boolean headless = Boolean.parseBoolean(ConfigReader.get("headless", "false"));
         if (headless) {
             options.addArguments("--headless");
         }
@@ -108,7 +108,7 @@ public class DriverManager {
         EdgeOptions options = new EdgeOptions();
         
         // Apply standard options
-        boolean headless = Boolean.parseBoolean(ConfigReader.getProperty("headless", "false"));
+        boolean headless = Boolean.parseBoolean(ConfigReader.get("headless", "false"));
         if (headless) {
             options.addArguments("--headless");
         }
