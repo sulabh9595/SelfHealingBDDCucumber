@@ -75,6 +75,11 @@ public class DriverManager {
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--disable-gpu");
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
+            options.addArguments("--lang=en-US,en;q=0.9");
+        } else {
+            options.addArguments("--window-size=1920,1080");
         }
         
         LOGGER.debug("Chrome WebDriver created with options: {}", options);
