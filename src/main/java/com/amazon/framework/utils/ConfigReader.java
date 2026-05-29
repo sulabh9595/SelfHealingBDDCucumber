@@ -19,10 +19,18 @@ public class ConfigReader {
     }
 
     public static String get(String key) {
+        String systemValue = System.getProperty(key);
+        if (systemValue != null) {
+            return systemValue;
+        }
         return PROPERTIES.getProperty(key);
     }
 
     public static String get(String key, String defaultValue) {
+        String systemValue = System.getProperty(key);
+        if (systemValue != null) {
+            return systemValue;
+        }
         return PROPERTIES.getProperty(key, defaultValue);
     }
 }

@@ -70,9 +70,16 @@ public class DriverManager {
         applyCommonOptions(options);
         
         // Chrome-specific options
-        boolean headless = Boolean.parseBoolean(ConfigReader.get("headless", "false"));
-        if (headless) {
-            options.addArguments("--headless");
+        if (isHeadless()) {
+            options.addArguments("--headless=new");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
+            options.addArguments("--lang=en-US,en;q=0.9");
+        } else {
+            options.addArguments("--window-size=1920,1080");
         }
         
         LOGGER.debug("Chrome WebDriver created with options: {}", options);
@@ -89,8 +96,7 @@ public class DriverManager {
         FirefoxOptions options = new FirefoxOptions();
         
         // Apply standard options
-        boolean headless = Boolean.parseBoolean(ConfigReader.get("headless", "false"));
-        if (headless) {
+        if (isHeadless()) {
             options.addArguments("--headless");
         }
         
@@ -108,13 +114,27 @@ public class DriverManager {
         EdgeOptions options = new EdgeOptions();
         
         // Apply standard options
-        boolean headless = Boolean.parseBoolean(ConfigReader.get("headless", "false"));
-        if (headless) {
+        if (isHeadless()) {
             options.addArguments("--headless");
         }
         
         LOGGER.debug("Edge WebDriver created");
         return new EdgeDriver(options);
+    }
+
+    /**
+     * Determines whether tests should run in headless mode.
+     * Defaults to true in CI/GitHub Actions unless explicitly configured otherwise.
+     *
+     * @return true if headless, false otherwise
+     */
+    private static boolean isHeadless() {
+        String headlessProp = ConfigReader.get("headless");
+        if (headlessProp != null) {
+            return Boolean.parseBoolean(headlessProp);
+        }
+        // Default to true in CI/GitHub Actions, false locally
+        return System.getenv("GITHUB_ACTIONS") != null || System.getenv("CI") != null;
     }
 
     /**

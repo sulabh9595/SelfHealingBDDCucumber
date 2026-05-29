@@ -44,8 +44,16 @@ public abstract class BasePage {
             logger.debug("Finding element: {}", locator);
             return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         } catch (TimeoutException e) {
-            logger.error("Element not found within timeout: {}", locator);
-            throw new ElementNotFoundException(locator);
+            String currentUrl = "unknown";
+            String pageTitle = "unknown";
+            try {
+                currentUrl = driver.getCurrentUrl();
+                pageTitle = driver.getTitle();
+            } catch (Exception ex) {
+                logger.error("Failed to get current URL/Title", ex);
+            }
+            logger.error("Element not found within timeout: {}. Current URL: {}. Page Title: {}", locator, currentUrl, pageTitle);
+            throw new ElementNotFoundException("Element not found: " + locator + " (Current URL: " + currentUrl + ", Page Title: " + pageTitle + ")");
         }
     }
 
@@ -60,8 +68,16 @@ public abstract class BasePage {
             logger.debug("Clicking element: {}", locator);
             wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
         } catch (TimeoutException e) {
-            logger.error("Element not clickable: {}", locator);
-            throw new ElementNotFoundException(locator);
+            String currentUrl = "unknown";
+            String pageTitle = "unknown";
+            try {
+                currentUrl = driver.getCurrentUrl();
+                pageTitle = driver.getTitle();
+            } catch (Exception ex) {
+                logger.error("Failed to get current URL/Title", ex);
+            }
+            logger.error("Element not clickable: {}. Current URL: {}. Page Title: {}", locator, currentUrl, pageTitle);
+            throw new ElementNotFoundException("Element not clickable: " + locator + " (Current URL: " + currentUrl + ", Page Title: " + pageTitle + ")");
         }
     }
 

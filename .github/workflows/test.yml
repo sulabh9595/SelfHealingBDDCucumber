@@ -30,7 +30,18 @@ jobs:
         uses: browser-actions/setup-chrome@latest
       
       - name: Run tests with Maven
-        run: mvn clean test -Dbrowser=${{ matrix.browser }} -Denvironment=staging
+        run: mvn clean test -Dbrowser=${{ matrix.browser }} -Dheadless=true -Denvironment=staging
+      
+      - name: Print Surefire reports on failure
+        if: failure()
+        run: |
+          echo "==== SUREFIRE REPORTS ===="
+          for file in target/surefire-reports/*.txt; do
+            if [ -f "$file" ]; then
+              echo "--- $file ---"
+              cat "$file"
+            fi
+          done
       
       - name: Generate Allure Report
         if: always()
@@ -49,7 +60,7 @@ jobs:
       
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-results
           path: allure-results/
